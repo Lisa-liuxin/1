@@ -1,7 +1,10 @@
 package com.example.user.myaccount;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -111,51 +114,89 @@ public class Main2Activity extends AppCompatActivity {
         });
     }
 
-    public void show(View view) {
-        switch (view.getId()) {
-            case R.id.et_save:// 保存
-            /*
-             * 1.创建SharedPerferences的对象 , 参数一:保存数据的文件名字 文件名如果存在 就不会创建 否则就会创建
-             * 参数二mode;数据的操作模式 如下:
-             * Context.MODE_PRIVATE：为默认操作模式,代表该文件是私有数据,只能被应用本身访问
-             * ,在该模式下,写入的内容会覆盖原文件的内容
-             * Context.MODE_APPEND：模式会检查文件是否存在,存在就往文件追加内容,否则就创建新文件.
-             * Context.MODE_WORLD_READABLE和Context
-             * .MODE_WORLD_WRITEABLE用来控制其他应用是否有权限读写该文件.
-             * MODE_WORLD_READABLE：表示当前文件可以被其他应用读取.
-             * MODE_WORLD_WRITEABLE：表示当前文件可以被其他应用写入
-             */
-                SharedPreferences sharedPreferences = this.getSharedPreferences(
-                        "SharedPreferences", this.MODE_PRIVATE);
-                // 2,获得sharedPreferences的编辑对象
-                SharedPreferences.Editor editer = sharedPreferences.edit();
-                // 3,向文件中put数据
-                String str1 = et_leibie.getText().toString().trim();
-                String str2 = et_username.getText().toString().trim();
-                String str3 = et_password.getText().toString().trim();
-                //假设不为空
-                editer.putString("leibie", str1);
-                editer.putString("username", str2);
-                editer.putString("password", str3);
-                // 4.使用commit提交数据
-                editer.commit();
-                // 提示信息
-                Toast.makeText(this, "保存成功", Toast.LENGTH_SHORT).show();
-                break;
+//    public void show(View view) {
+//        switch (view.getId()) {
+//            case R.id.et_save:// 保存
+//            /*
+//             * 1.创建SharedPerferences的对象 , 参数一:保存数据的文件名字 文件名如果存在 就不会创建 否则就会创建
+//             * 参数二mode;数据的操作模式 如下:
+//             * Context.MODE_PRIVATE：为默认操作模式,代表该文件是私有数据,只能被应用本身访问
+//             * ,在该模式下,写入的内容会覆盖原文件的内容
+//             * Context.MODE_APPEND：模式会检查文件是否存在,存在就往文件追加内容,否则就创建新文件.
+//             * Context.MODE_WORLD_READABLE和Context
+//             * .MODE_WORLD_WRITEABLE用来控制其他应用是否有权限读写该文件.
+//             * MODE_WORLD_READABLE：表示当前文件可以被其他应用读取.
+//             * MODE_WORLD_WRITEABLE：表示当前文件可以被其他应用写入
+//             */
+//                SharedPreferences sharedPreferences = this.getSharedPreferences(
+//                        "SharedPreferences", this.MODE_PRIVATE);
+//                // 2,获得sharedPreferences的编辑对象
+//                SharedPreferences.Editor editer = sharedPreferences.edit();
+//                // 3,向文件中put数据
+//                String str1 = et_leibie.getText().toString().trim();
+//                String str2 = et_username.getText().toString().trim();
+//                String str3 = et_password.getText().toString().trim();
+//                //假设不为空
+//                editer.putString("leibie", str1);
+//                editer.putString("username", str2);
+//                editer.putString("password", str3);
+//                // 4.使用commit提交数据
+//                editer.commit();
+//                // 提示信息
+//                Toast.makeText(this, "保存成功", Toast.LENGTH_SHORT).show();
+//                break;
+//
+//            case R.id.et_read:
+//                // 读取刚刚保存的文件数据
+//                // 1,得到SharedPreferences的对象 参数一 参数二相似
+//                SharedPreferences sharedPreferencesRead = this
+//                        .getSharedPreferences("SharedPreferences",
+//                                this.MODE_PRIVATE);
+//                // 2,根据保存的k键读取
+//                String name = sharedPreferencesRead.getString("name", "");
+//                // 输出信息
+//                et_leibie.setText(name);
+//                break;
+//
+//        }
+//
+//    }
 
-            case R.id.et_read:
-                // 读取刚刚保存的文件数据
-                // 1,得到SharedPreferences的对象 参数一 参数二相似
-                SharedPreferences sharedPreferencesRead = this
-                        .getSharedPreferences("SharedPreferences",
-                                this.MODE_PRIVATE);
-                // 2,根据保存的k键读取
-                String name = sharedPreferencesRead.getString("name", "");
-                // 输出信息
-                et_leibie.setText(name);
-                break;
+    public class MyDatabaseHelper extends SQLiteOpenHelper {
+        public static final String Account = "CREATE TABLE account ("
+                + "id  integer PRIMARY KEY Autoincrement ,"
+                + "Catagory text ,"
+                + "username text,"
+                + "password string )";
+        /**
+         * integer：整形
+         * real：浮点型
+         * text：文本类型
+         * blob：二进制类型
+         * PRIMARY KEY将id列设置为主键
+         * AutoIncrement关键字表示id列是自动增长的
+         */
+
+        private Context myContent;
+
+        public MyDatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+            super(context, name, factory, version);
+            myContent = context;
+        }
+
+        @Override
+        public void onCreate(SQLiteDatabase db) {
+            //创建数据库的同时创建Book表
+            db.execSQL(Account);
+            //提示数据库创建成功
+            Toast.makeText(myContent, "数据库创建成功", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
         }
 
     }
+
 }

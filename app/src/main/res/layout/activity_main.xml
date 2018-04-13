@@ -59,6 +59,15 @@
         android:paddingBottom="5dp"
         android:layout_alignTop="@+id/listviewsimple" />
 
+    <TextView
+        android:id="@+id/lblTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="记录的数据"
+        android:layout_marginTop="33dp"
+        android:layout_below="@+id/bt1"
+        android:layout_centerHorizontal="true" />
+
     <ListView
         android:id="@+id/listviewsimple"
         android:layout_width="match_parent"
@@ -68,16 +77,7 @@
         android:layout_below="@+id/lblTitle"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="19dp" />
-
-    <TextView
-        android:id="@+id/lblTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="记录的数据"
-        android:layout_marginTop="33dp"
-        android:layout_below="@+id/bt1"
-        android:layout_centerHorizontal="true" />
+        android:layout_marginTop="71dp" />
     />
 
 
